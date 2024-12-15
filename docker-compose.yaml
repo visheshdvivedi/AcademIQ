@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=api_pass
+      - POSTGRES_USER=api_user
+      - POSTGRES_DB=lms_db

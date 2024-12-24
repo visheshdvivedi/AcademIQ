@@ -1,9 +1,47 @@
 services:
+
   postgres:
     image: postgres:15
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=api_pass
       - POSTGRES_USER=api_user
       - POSTGRES_DB=lms_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  users-service:
+    build: ./users-service
+    container_name: users-service
+    environment:
+      DATABASE_URL: postgresql://api_user:api_pass@postgres:5432/lms_db
+    ports:
+      - "4000:4000"
+    depends_on:
+      - "postgres"
+
+  course-service:
+    build:
+      context: ./course-service
+      dockerfile: Dockerfile
+    container_name: course-service
+    environment:
+      DATABASE_URL: postgresql://api_user:api_pass@postgres:5432/lms_db
+    ports:
+      - "4001:4001"
+    depends_on:
+      - "postgres"
+
+  nginx:
+    image: nginx:1.21-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - "users-service"
+      - "course-service"
+
+volumes:
+  postgres_data:

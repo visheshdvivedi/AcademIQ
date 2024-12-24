@@ -29,10 +29,10 @@ async def default_error_handling(request: Request, exception: Exception):
 # ----- Route exception handlers -----
 
 def integrity_error_handler(exception: IntegrityError):
-    if "users_email_key" in exception.orig.args[0]:
+    if "slug" in str(exception.orig):
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
-            content={"message": "Email ID already exists, please login to continue"}
+            content={"message": "Course with the same slug name already exists"}
         )
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

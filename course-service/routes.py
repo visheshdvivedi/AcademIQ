@@ -22,7 +22,7 @@ from utils.exception_handling import (
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-@router.get("/")
+@router.get("/course/test")
 async def index():
     return {"message": "Course service is up and running"}
 

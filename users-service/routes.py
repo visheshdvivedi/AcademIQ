@@ -25,7 +25,7 @@ from utils.exception_handling import (
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-@router.get("/")
+@router.get("/user/test")
 async def index():
     return {"message": "Users service is up and running"}
 

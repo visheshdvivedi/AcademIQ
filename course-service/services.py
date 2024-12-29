@@ -42,7 +42,9 @@ def create_course(db: Session, data: CreateCourseSchema):
     # validate instructor details
     import traceback
     try:
-        response = requests.get(USER_SERVICE_URL + str(new_course.instructor_id))
+        url = USER_SERVICE_URL + str(new_course.instructor_id)
+        response = requests.get(url)
+        print(url, response)
         if not response.ok:
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,

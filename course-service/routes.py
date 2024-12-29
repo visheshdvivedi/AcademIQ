@@ -19,21 +19,21 @@ from utils.exception_handling import (
     default_exception_handler
 )
 
-router = APIRouter()
+router = APIRouter(prefix="/api/course")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-@router.get("/course/test")
+@router.get("/health")
 async def index():
     return {"message": "Course service is up and running"}
 
-@router.get("/course")
+@router.get("/")
 async def get_all_courses(db: Session = Depends(get_db)):
     try:
         return fetch_all_courses(db)
     except Exception as e:
         return default_exception_handler(e)
 
-@router.post("/course")
+@router.post("/create")
 async def create_new_course(data: CreateCourseSchema, db: Session = Depends(get_db)):
     try:
         return create_course(db, data)
@@ -44,7 +44,7 @@ async def create_new_course(data: CreateCourseSchema, db: Session = Depends(get_
     except Exception as e:
         return default_exception_handler(e)
 
-@router.get("/course/{course_id}")
+@router.get("/{course_id}")
 async def get_course_by_id(course_id: UUID, db: Session = Depends(get_db)):
     try:
         return fetch_course_by_id(db, course_id)

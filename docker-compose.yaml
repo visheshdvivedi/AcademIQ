@@ -47,11 +47,13 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: openresty-nginx
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
     ports:
       - "80:80"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/jwt.lua:/etc/nginx/jwt.lua
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./nginx/jwt.lua:/usr/local/openresty/nginx/lua/jwt.lua
     depends_on:
       - "users-service"
       - "course-service"

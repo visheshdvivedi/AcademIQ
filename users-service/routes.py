@@ -30,9 +30,9 @@ async def index():
     return {"message": "Users service is up and running"}
 
 @router.get("/")
-async def get_all_users(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+async def get_all_users(db: Session = Depends(get_db)):
     try:
-        return fetch_all_users(token, db)
+        return fetch_all_users(db)
     except Exception as e:
         return default_exception_handler(e)
 

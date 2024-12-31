@@ -33,12 +33,9 @@ def verify_password(plaintext_password, hashed_password) -> bool:
 def get_password_hash(password) -> str:
     return pwd_context.hash(password)
 
-def fetch_all_users(token: Annotated[str, Depends(oauth2_scheme)], db: Session) -> List[dict]:
-    try:
-        users = db.query(User).filter(User.is_deleted == False).all()
-        return [user.to_json() for user in users]
-    except Exception:
-        return credentials_exception
+def fetch_all_users(db: Session) -> List[dict]:
+    users = db.query(User).filter(User.is_deleted == False).all()
+    return [user.to_json() for user in users]
 
 def fetch_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session) -> List[dict]:
     try:

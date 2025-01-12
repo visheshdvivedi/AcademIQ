@@ -7,7 +7,7 @@ local jwtToken = ngx.var.http_Authorization
 if jwtToken == nil then
     ngx.status = ngx.HTTP_UNAUTHORIZED
     ngx.header.content_type = "application/json; charset=utf-8"
-    ngx.say('{"error":"Unauthorized"}')
+    ngx.say('{"message":"Unauthorized"}')
     ngx.exit(ngx.HTTP_UNAUTHORIZED)
 end
 
@@ -24,6 +24,6 @@ local jwt_obj = jwt:verify(secret, jwtToken, claim_spec)
 if not jwt_obj["verified"] then
     ngx.status = ngx.HTTP_UNAUTHORIZED
     ngx.header.content_type = "application/json; charset=utf-8"
-    ngx.say(jwt_obj.reason)
+    ngx.say('{"message": "Invalid JWT token"}')
     ngx.exit(ngx.HTTP_UNAUTHORIZED)
 end
